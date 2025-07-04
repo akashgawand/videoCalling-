@@ -24,7 +24,7 @@ const App = () => {
   const userVideo = useRef(null);
   const peerConnection = useRef(null);
 
-  // WebRTC configuration
+  
   const configuration = {
     iceServers: [
       { urls: "stun:stun.l.google.com:19302" },
@@ -33,7 +33,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    // Get user media
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
       .then((stream) => {
         setStream(stream);
