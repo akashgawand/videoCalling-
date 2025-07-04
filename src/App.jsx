@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-const socket = io.connect("http://localhost:8080");
+const socket = io.connect("https://videocall-backend-xlmu.onrender.com");
 
 const App = () => {
   const [me, setMe] = useState("");
