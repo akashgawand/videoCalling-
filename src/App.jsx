@@ -20,9 +20,10 @@ const App = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const myVideo = useRef(null);
-  const userVideo = useRef(null);
-  const peerConnection = useRef(null);
+  
+  const myVideo = useRef(null); // this is for video tag 
+  const userVideo = useRef(null); // and ye vala user ke video ke liye 
+  const peerConnection = useRef(null); // webrtc vala  peerconnection is going to render again and again so this going to stop it 
 
   
   const configuration = {
@@ -44,7 +45,7 @@ const App = () => {
         console.error("Error accessing media devices:", error);
       });
 
-    // Socket event listeners
+
     socket.on("me", (id) => setMe(id));
 
     socket.on("callUser", (data) => {
@@ -89,21 +90,20 @@ const App = () => {
   const createPeerConnection = () => {
     const pc = new RTCPeerConnection(configuration);
 
-    // Add local stream to peer connection
+    
     if (stream) {
       stream.getTracks().forEach(track => {
         pc.addTrack(track, stream);
       });
     }
 
-    // Handle incoming stream
+   
     pc.ontrack = (event) => {
       if (userVideo.current) {
         userVideo.current.srcObject = event.streams[0];
       }
     };
 
-    // Handle ICE candidates
     pc.onicecandidate = (event) => {
       if (event.candidate) {
         socket.emit("ice-candidate", {
@@ -201,7 +201,7 @@ const App = () => {
       peerConnection.current = null;
     }
     
-    // Reset states
+   
     setCallAccepted(false);
     setReceivingCall(false);
     setOtherUserName("");
@@ -231,7 +231,7 @@ const App = () => {
           <p className="text-gray-600">Connect with friends instantly</p>
         </div>
 
-        {/* Name Input Section */}
+  
         <div className="mb-8">
           <div className="flex flex-col items-center space-y-4">
             <input
@@ -269,7 +269,7 @@ const App = () => {
           </div>
         </div>
 
-        {/* Join Room Section */}
+        
         <div className="mb-8">
           <div className="flex flex-col items-center space-y-4">
             <div className="w-full max-w-md">
@@ -302,11 +302,10 @@ const App = () => {
           </div>
         </div>
 
-        {/* Video Section */}
+     
         {stream && (
           <div className="mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* My Video */}
               <div className="relative">
                 <video
                   ref={myVideo}
@@ -320,7 +319,7 @@ const App = () => {
                 </div>
               </div>
 
-              {/* Other User's Video */}
+
               {callAccepted && !callEnded && (
                 <div className="relative animate-in fade-in duration-500">
                   <video
@@ -338,7 +337,6 @@ const App = () => {
           </div>
         )}
 
-        {/* Call Controls */}
         {callAccepted && !callEnded && (
           <div className="text-center mb-4">
             <button
@@ -350,7 +348,6 @@ const App = () => {
           </div>
         )}
 
-        {/* Incoming Call Modal */}
         {receivingCall && !callAccepted && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-in fade-in duration-300">
             <div className="bg-white rounded-2xl p-8 max-w-sm w-full mx-4 text-center animate-in zoom-in duration-300">
@@ -377,7 +374,6 @@ const App = () => {
           </div>
         )}
 
-        {/* Status Messages */}
         {callAccepted && !callEnded && (
           <div className="text-center">
             <div className="inline-flex items-center space-x-2 bg-green-100 text-green-800 px-4 py-2 rounded-full">
