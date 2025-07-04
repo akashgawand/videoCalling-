@@ -147,11 +147,11 @@ const App = () => {
       // Create peer connection
       peerConnection.current = createPeerConnection();
       
-      // Create offer
+
       const offer = await peerConnection.current.createOffer();
       await peerConnection.current.setLocalDescription(offer);
       
-      // Send offer through socket
+
       socket.emit("callUser", {
         to: inputRoomId,
         signal: offer,
@@ -169,13 +169,13 @@ const App = () => {
       setCallAccepted(true);
       setReceivingCall(false);
       
-      // Create peer connection
+
       peerConnection.current = createPeerConnection();
       
-      // Set remote description with the offer
+
       await peerConnection.current.setRemoteDescription(new RTCSessionDescription(callerSignal));
       
-      // Create answer
+
       const answer = await peerConnection.current.createAnswer();
       await peerConnection.current.setLocalDescription(answer);
       
